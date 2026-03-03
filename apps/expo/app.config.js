@@ -6,7 +6,7 @@ const assetsDir = path.join(projectRoot, "assets/images/expo-icons");
 const iconPath = path.join(assetsDir, "icon.png");
 const adaptiveIconPath = path.join(assetsDir, "adaptive-icon.png");
 const splashIconPath = path.join(assetsDir, "splash-icon.png");
-const splashImagePath = path.join(assetsDir, "splash.png");
+// const splashImagePath = path.join(assetsDir, "splash.png");
 const faviconPath = path.join(assetsDir, "favicon.png");
 
 // Plugin: copy icon to splashscreen_logo (required when splash image disabled)
@@ -28,10 +28,10 @@ const config = {
   android: {
     adaptiveIcon: {
       foregroundImage: adaptiveIconPath,
-      backgroundColor: "#ffffff",
+      backgroundColor: "#030812",
     },
     permissions: ["android.permission.NFC", "android.permission.RECORD_AUDIO"],
-    package: "com.spencerls.venturai",
+    package: "com.venturai",
   },
   plugins: [
     "expo-router",
@@ -46,7 +46,7 @@ const config = {
     [
       "expo-splash-screen",
       {
-        backgroundColor: "#0D1117",
+        backgroundColor: "#030812",
         image: splashIconPath,
         imageWidth: 200,
         resizeMode: "contain",
