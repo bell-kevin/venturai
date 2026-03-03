@@ -15,6 +15,29 @@ Technical details: the monorepo uses pnpm + Turborepo with TypeScript across an 
 - **Biome** formatter/linter
 - **TypeScript** everywhere
 
+## Screenshots & demos
+
+Dashboard (risk overview, asset list, work items):
+
+| [Dashboard](featured-assets/dashboard.png) | [Asset / CNC Router](featured-assets/router_dashboard.png) | [Work items](featured-assets/work_items_dashboard.png) |
+|-------------------------------------------|-------------------------------------------------------------|--------------------------------------------------------|
+| ![Dashboard](featured-assets/dashboard.png) | ![Router dashboard](featured-assets/router_dashboard.png) | ![Work items](featured-assets/work_items_dashboard.png) |
+
+Mobile app (home, public asset view, private inspection):
+
+| [App home](featured-assets/app_home.jpg) | [Public asset view](featured-assets/public_view.jpg) | [Private view](featured-assets/private_view.jpg) |
+|-----------------------------------------|-------------------------------------------------------|--------------------------------------------------|
+| ![App home](featured-assets/app_home.jpg) | ![Public view](featured-assets/public_view.jpg) | ![Private view](featured-assets/private_view.jpg) |
+
+Videos (may render inline on GitHub; otherwise open the links to play):
+
+<table>
+<tr>
+<td><strong>App walkthrough</strong><br/><video src="featured-assets/app.mp4" controls width="280"></video><br/><a href="featured-assets/app.mp4">Download app.mp4</a></td>
+<td><strong>NFC scan</strong><br/><video src="featured-assets/scan.mp4" controls width="280"></video><br/><a href="featured-assets/scan.mp4">Download scan.mp4</a></td>
+</tr>
+</table>
+
 ## Prerequisites
 
 - **Node.js 18+** (LTS recommended)

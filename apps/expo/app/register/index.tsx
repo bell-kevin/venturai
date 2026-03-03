@@ -96,6 +96,11 @@ function NfcWriteStep({
 export default function RegisterAssetScreen() {
   const router = useRouter();
 
+  const makeClientId = useCallback(
+    () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`,
+    [],
+  );
+
   const [step, setStep] = useState<Step>("photo");
   const [nfcStatus, setNfcStatus] = useState<
     "checking" | "supported" | "unsupported"
@@ -110,16 +115,25 @@ export default function RegisterAssetScreen() {
   });
   const [createdAssetId, setCreatedAssetId] = useState<string | null>(null);
   const [templateForm, setTemplateForm] = useState<{
-    photoDescriptions: string[];
+    photoDescriptions: Array<{ id: string; value: string }>;
     additionalQuestions: Array<{
+      id: string;
       key: string;
       label: string;
       type: "text" | "number" | "boolean";
     }>;
   }>({
-    photoDescriptions: ["Wide shot", "Close-up of area of concern"],
+    photoDescriptions: [
+      { id: makeClientId(), value: "Wide shot" },
+      { id: makeClientId(), value: "Close-up of area of concern" },
+    ],
     additionalQuestions: [
-      { key: "condition", label: "Overall condition (1-5)", type: "number" },
+      {
+        id: makeClientId(),
+        key: "condition",
+        label: "Overall condition (1-5)",
+        type: "number",
+      },
     ],
   });
 
@@ -423,15 +437,15 @@ export default function RegisterAssetScreen() {
 
         <Text style={styles.label}>Photo descriptions (one per photo)</Text>
         {templateForm.photoDescriptions.map((desc, i) => (
-          <View key={`photo-${i}-${desc.slice(0, 10)}`} style={styles.row}>
+          <View key={desc.id} style={styles.row}>
             <TextInput
               style={[styles.input, styles.flex1]}
-              value={desc}
+              value={desc.value}
               onChangeText={(v) =>
                 setTemplateForm((f) => ({
                   ...f,
-                  photoDescriptions: f.photoDescriptions.map((d, j) =>
-                    j === i ? v : d,
+                  photoDescriptions: f.photoDescriptions.map((d) =>
+                    d.id === desc.id ? { ...d, value: v } : d,
                   ),
                 }))
               }
@@ -443,7 +457,9 @@ export default function RegisterAssetScreen() {
               onPress={() =>
                 setTemplateForm((f) => ({
                   ...f,
-                  photoDescriptions: f.photoDescriptions.filter((_, j) => j !== i),
+                  photoDescriptions: f.photoDescriptions.filter(
+                    (d) => d.id !== desc.id,
+                  ),
                 }))
               }
             >
@@ -456,7 +472,10 @@ export default function RegisterAssetScreen() {
           onPress={() =>
             setTemplateForm((f) => ({
               ...f,
-              photoDescriptions: [...f.photoDescriptions, ""],
+              photoDescriptions: [
+                ...f.photoDescriptions,
+                { id: makeClientId(), value: "" },
+              ],
             }))
           }
         >
@@ -466,16 +485,16 @@ export default function RegisterAssetScreen() {
         </Pressable>
 
         <Text style={[styles.label, styles.labelTop]}>Additional questions</Text>
-        {templateForm.additionalQuestions.map((q, i) => (
-          <View key={`q-${i}-${q.key}`} style={styles.questionRow}>
+        {templateForm.additionalQuestions.map((q) => (
+          <View key={q.id} style={styles.questionRow}>
             <TextInput
               style={[styles.input, styles.flex1]}
               value={q.key}
               onChangeText={(v) =>
                 setTemplateForm((f) => ({
                   ...f,
-                  additionalQuestions: f.additionalQuestions.map((aq, j) =>
-                    j === i ? { ...aq, key: v } : aq,
+                  additionalQuestions: f.additionalQuestions.map((aq) =>
+                    aq.id === q.id ? { ...aq, key: v } : aq,
                   ),
                 }))
               }
@@ -488,8 +507,8 @@ export default function RegisterAssetScreen() {
               onChangeText={(v) =>
                 setTemplateForm((f) => ({
                   ...f,
-                  additionalQuestions: f.additionalQuestions.map((aq, j) =>
-                    j === i ? { ...aq, label: v } : aq,
+                  additionalQuestions: f.additionalQuestions.map((aq) =>
+                    aq.id === q.id ? { ...aq, label: v } : aq,
                   ),
                 }))
               }
@@ -507,8 +526,8 @@ export default function RegisterAssetScreen() {
                   onPress={() =>
                     setTemplateForm((f) => ({
                       ...f,
-                      additionalQuestions: f.additionalQuestions.map((aq, j) =>
-                        j === i ? { ...aq, type: t } : aq,
+                      additionalQuestions: f.additionalQuestions.map((aq) =>
+                        aq.id === q.id ? { ...aq, type: t } : aq,
                       ),
                     }))
                   }
@@ -530,7 +549,7 @@ export default function RegisterAssetScreen() {
                 setTemplateForm((f) => ({
                   ...f,
                   additionalQuestions: f.additionalQuestions.filter(
-                    (_, j) => j !== i,
+                    (aq) => aq.id !== q.id,
                   ),
                 }))
               }
@@ -546,7 +565,7 @@ export default function RegisterAssetScreen() {
               ...f,
               additionalQuestions: [
                 ...f.additionalQuestions,
-                { key: "", label: "", type: "text" },
+                { id: makeClientId(), key: "", label: "", type: "text" },
               ],
             }))
           }
@@ -558,15 +577,19 @@ export default function RegisterAssetScreen() {
 
         <Pressable
           style={styles.button}
-          disabled={templateForm.photoDescriptions.every((d) => !d.trim())}
+          disabled={templateForm.photoDescriptions.every((d) => !d.value.trim())}
           onPress={async () => {
             if (!selectedOrgId || !createdAssetId) return;
             const validPhotos = templateForm.photoDescriptions
-              .map((d) => d.trim())
+              .map((d) => d.value.trim())
               .filter(Boolean);
             const validQuestions = templateForm.additionalQuestions
               .filter((q) => q.key.trim() && q.label.trim())
-              .map((q) => ({ ...q, key: q.key.trim(), label: q.label.trim() }));
+              .map((q) => ({
+                key: q.key.trim(),
+                label: q.label.trim(),
+                type: q.type,
+              }));
             if (validPhotos.length === 0) return;
 
             const templateId = await createTemplate({
