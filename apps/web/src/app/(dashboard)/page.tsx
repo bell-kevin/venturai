@@ -8,14 +8,12 @@ import type { Id } from "@venturai/backend/dataModel";
 import { useQuery } from "convex/react";
 import Link from "next/link";
 
-function ScanIcon() {
+function InspectionIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 7V5a2 2 0 0 1 2-2h2" />
-      <path d="M17 3h2a2 2 0 0 1 2 2v2" />
-      <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
-      <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
-      <path d="M7 12h10" />
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <path d="M9 15l2 2 4-4" />
     </svg>
   );
 }
@@ -343,8 +341,8 @@ export default function DashboardPage() {
                 href="/assets"
                 className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 font-medium text-white transition-colors hover:bg-primary/90"
               >
-                <ScanIcon />
-                Start New Scan
+                <InspectionIcon />
+                View all assets
               </Link>
               <button
                 type="button"

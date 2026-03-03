@@ -9,7 +9,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import venturaiBanner from "@/assets/banner.png";
-import { ThemeToggle } from "./ThemeToggle";
 
 function DashboardIcon() {
   return (
@@ -163,16 +162,15 @@ export function Sidebar() {
 
   return (
     <aside className="flex w-56 flex-col border-r border-card-border bg-[#090712] p-4">
-      <div className="mb-6 flex items-center justify-between gap-2">
-        <Link href="/" className="flex min-w-0 shrink flex-1">
+      <div className="mb-6 flex w-full justify-center">
+        <Link href="/" className="block w-full">
           <Image
             src={venturaiBanner}
             alt="Venturai"
-            className="h-28 w-full object-contain object-left"
+            className="h-28 w-full object-contain object-center"
             priority
           />
         </Link>
-        <ThemeToggle />
       </div>
       <nav className="flex flex-1 flex-col gap-1">
         {nav.map(({ href, label, icon: Icon, badgeKey }) => {

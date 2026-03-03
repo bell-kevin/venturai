@@ -4,6 +4,7 @@ import type { Id } from "@venturai/backend/dataModel";
 import { useSelectedOrg } from "@/hooks/useSelectedOrg";
 
 import { Sidebar } from "./Sidebar";
+import { ThemeToggle } from "./ThemeToggle";
 
 function SearchIcon() {
   return (
@@ -104,6 +105,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               <span className="h-2 w-2 rounded-full bg-risk-low" aria-hidden />
               <span className="font-medium text-foreground">LIVE DATA</span>
             </span>
+            <ThemeToggle />
             <button
               type="button"
               className="rounded-lg p-2 text-foreground/70 hover:bg-card-border/50 hover:text-foreground"
