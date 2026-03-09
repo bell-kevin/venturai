@@ -199,3 +199,5 @@ venturai/
 ```
 
 Environment: **one** `.env.local` at the repo root (see step 3); it is symlinked into apps and backend so Convex URL and other vars are shared.
+
+![trophy](https://github.com/bell-kevin/venturai/blob/main/20260305_212109.webp)
